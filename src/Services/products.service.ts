@@ -18,12 +18,23 @@ class ProductService {
     });
   };
 
-  public findProducts = async () => {
-    return this.model.findMany();
+  public findProducts = async (sellerid: number) => {
+    if (sellerid) {
+      return this.model.findMany({
+        where: {sellerid},
+      });
+    } else {
+      return this.model.findMany({
+        include: {seller: {select: {name: true, id: true}}},
+      });
+    }
   };
 
   public findById = async (id: number) => {
-    const product = await this.model.findUnique({where: {id}});
+    const product = await this.model.findFirst({
+      where: {id},
+      include: {seller: {select: {name: true, id: true}}},
+    });
     if (!product) throw new HttpException(404);
     return product;
   };
@@ -33,7 +44,7 @@ class ProductService {
     updatedProduct: Partial<Iproduct>,
   ) => {
     await this.findById(id);
-    return this.model.updateMany({where: {id}, data: updatedProduct});
+    return this.model.update({where: {id}, data: updatedProduct});
   };
 
   public deleteProduct = async (id: number) => {

@@ -1,5 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import commandService from '../Services/command.service';
+import command_productsService from '../Services/command_products.service';
+import IcustomRequest from '../Interfaces/IcustomHeader';
 
 class CommandController {
   private service;
@@ -75,6 +77,23 @@ class CommandController {
       console.log(req.body);
       const updated = await this.service.debitProduct(commandId, products);
       return res.status(201).json(updated);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  public getOrdersBySellerId = async (
+    req: IcustomRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const {id} = req.headers.userData;
+      console.log(req.headers.userData);
+      const orders = await command_productsService.getOrdersBySellerId(
+        Number(id),
+      );
+      return res.status(200).json(orders);
     } catch (err) {
       next(err);
     }

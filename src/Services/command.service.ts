@@ -93,7 +93,9 @@ class CommandService {
     if (command.value - debitValue < 0) {
       throw new HttpException(
         400,
-        'Impossível debitar valores maiores que o valor da comanda',
+        `Saldo insuficiente, o valor na comanda é R$ ${command.value.toFixed(
+          2,
+        )}`,
       );
     }
 

@@ -28,12 +28,13 @@ class ProductController {
   };
 
   public getProducts = async (
-    _req: Request,
+    req: Request,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const products = await this.service.findProducts();
+      const {sellerId} = req.params;
+      const products = await this.service.findProducts(Number(sellerId));
       return res.status(200).json(products);
     } catch (err) {
       next(err);

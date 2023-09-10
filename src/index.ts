@@ -2,12 +2,15 @@ import bodyParser = require('body-parser');
 import {NextFunction, Request, Response} from 'express';
 import productRouter from './router/product.route';
 import orderRouter from './router/order.route';
+import loginRouter from './router/login.route';
 import commandRouter from './router/command.route';
+import commandOrderRouter from './router/commandOrder.route';
+import userRouter from './router/user.route';
 import errorMiddleware from './Middlewares/error.middleware';
 
 const express = require('express');
 const app = express();
-require('dotenv').config();
+require('dotenv-safe').config();
 const {PORT} = process.env;
 
 app.use(bodyParser.json());
@@ -27,6 +30,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use('/products', productRouter);
 app.use('/orders', orderRouter);
 app.use('/commands', commandRouter);
+app.use('/login', loginRouter);
+app.use('/command-orders', commandOrderRouter);
+app.use('/users', userRouter);
 
 app.use(errorMiddleware);
 
