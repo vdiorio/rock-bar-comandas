@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import productsService from '../Services/products.service';
 import Iproduct from '../Interfaces/Iproduct';
+import userService from '../Services/user.service';
 
 class ProductController {
   private service;
@@ -15,11 +16,11 @@ class ProductController {
     next: NextFunction,
   ) => {
     try {
-      const {name, price, photo} = req.body;
+      const {name, price, categoryId} = req.body;
       const product = await this.service.createProduct(
         name,
         Number(price),
-        photo,
+        categoryId,
       );
       return res.status(200).json(product);
     } catch (err) {
@@ -33,8 +34,12 @@ class ProductController {
     next: NextFunction,
   ) => {
     try {
-      const {sellerId} = req.params;
-      const products = await this.service.findProducts(Number(sellerId));
+      const {sellerId} = req.query;
+      let categoryId;
+      if (sellerId) {
+        categoryId = await userService.findSellerCategory(Number(sellerId));
+      }
+      const products = await this.service.findProducts(categoryId);
       return res.status(200).json(products);
     } catch (err) {
       next(err);
@@ -76,7 +81,6 @@ class ProductController {
   ) => {
     try {
       const id = Number(req.params.id);
-      console.log(id);
       const deleted = await this.service.deleteProduct(id);
       return res.status(201).json(deleted);
     } catch (err) {

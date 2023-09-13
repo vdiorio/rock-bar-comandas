@@ -72,6 +72,21 @@ class CommandController {
       next(err);
     }
   };
+
+  public updateCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const data = req.body;
+      const id = req.params.id;
+      const updated = await this.service.updateUser(Number(id), data);
+      return res.status(200).json(updated.categoryId);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 export default new CommandController();

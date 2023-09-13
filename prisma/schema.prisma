@@ -24,7 +24,8 @@ model User {
   email    String    @unique
   name     String
   cpf      String    @unique
-  products  Product[]
+  category Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
 }
 
 model Product {
@@ -33,8 +34,15 @@ model Product {
   price           Float
   stock           Int               @default(0)
   CommandProducts CommandProducts[]
-  seller          User              @relation(fields: [sellerid], references: [id])
-  sellerid        Int               @default(1)
+  category          Category              @relation(fields: [categoryId], references: [id])
+  categoryId        Int
+}
+
+model Category {
+  id              Int               @id @default(autoincrement())
+  name            String
+  products        Product[]
+  sellers         User[]
 }
 
 model Command {

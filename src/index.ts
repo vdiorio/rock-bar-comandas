@@ -5,6 +5,7 @@ import orderRouter from './router/order.route';
 import loginRouter from './router/login.route';
 import commandRouter from './router/command.route';
 import commandOrderRouter from './router/commandOrder.route';
+import categoryRouter from './router/category.route';
 import userRouter from './router/user.route';
 import errorMiddleware from './Middlewares/error.middleware';
 
@@ -33,6 +34,7 @@ app.use('/commands', commandRouter);
 app.use('/login', loginRouter);
 app.use('/command-orders', commandOrderRouter);
 app.use('/users', userRouter);
+app.use('/categories', categoryRouter);
 
 app.use(errorMiddleware);
 

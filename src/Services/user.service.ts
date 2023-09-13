@@ -18,15 +18,36 @@ class UserService {
     if (role !== 'USER' && role !== 'SELLER') {
       throw new HttpException(400, `"${role}" não é uma opção valida`);
     }
-    const users = (
-      await this.model.findMany({
-        where: {OR: [{role}, {id: 1}]},
-      })
-    ).map((u) => {
-      const user: Partial<Iuser> = {...u};
-      delete user.password;
-      return user;
-    });
+    let users;
+    if (role !== 'SELLER') {
+      users = (
+        await this.model.findMany({
+          where: {OR: [{role}, {id: 1}]},
+        })
+      ).map((u) => {
+        const user: Partial<Iuser> = {...u};
+        delete user.password;
+        return user;
+      });
+    } else {
+      users = (
+        await this.model.findMany({
+          where: {OR: [{role}, {id: 1}]},
+          include: {category: true},
+        })
+      ).map((u) => {
+        const user = {
+          id: u.id,
+          username: u.username,
+          role: u.role,
+          email: u.email,
+          name: u.name,
+          cpf: u.cpf,
+          category: u.category,
+        };
+        return user;
+      });
+    }
     return users;
   };
 
@@ -49,6 +70,11 @@ class UserService {
     }
   };
 
+  public findSellerCategory = async (id: number) => {
+    const seller = await this.model.findUnique({where: {id}});
+    return seller?.categoryId;
+  };
+
   public authUser = async (email: string, password: string) => {
     const user = await this.model.findFirst({where: {email}});
     if (!user) throw new HttpException(404, 'Usuário inexistente');
@@ -61,13 +87,18 @@ class UserService {
       email: user.email,
     };
     const token = jwt.sign(tokenData, JWT_SECRET!, jwtOptions);
-    return {role: user.role, token};
+    return {id: user.id, role: user.role, token};
   };
 
   public resetPassword = async (id: number, pass: string) => {
     const password = bcrypt.hashSync(pass, Number(SALT_ROUNDS));
     const updated = await this.model.update({where: {id}, data: {password}});
     return updated;
+  };
+
+  public adminCategoryUpdate = async (id: number, categoryId: number) => {
+    const updated = await this.model.update({where: {id}, data: {categoryId}});
+    return updated.categoryId;
   };
 }
 

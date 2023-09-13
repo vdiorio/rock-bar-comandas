@@ -73,7 +73,6 @@ class CommandService {
     commandId: number,
     productList: {productId: number; quantity: number}[],
   ) => {
-    console.log(productList);
     const productIds = productList.map(({productId}) => productId);
     const quantity = productList.map(({quantity}) => quantity);
 

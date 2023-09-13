@@ -9,23 +9,28 @@ class ProductService {
     this.model = new PrismaClient().product;
   }
 
-  public createProduct = async (name: string, price: number, photo: string) => {
+  public createProduct = async (
+    name: string,
+    price: number,
+    categoryId: number,
+  ) => {
     return this.model.create({
       data: {
         name,
         price,
+        categoryId,
       },
     });
   };
 
-  public findProducts = async (sellerid: number) => {
-    if (sellerid) {
+  public findProducts = async (categoryId: number | null | undefined) => {
+    if (categoryId) {
       return this.model.findMany({
-        where: {sellerid},
+        where: {categoryId},
       });
     } else {
       return this.model.findMany({
-        include: {seller: {select: {name: true, id: true}}},
+        include: {category: true},
       });
     }
   };
@@ -33,7 +38,7 @@ class ProductService {
   public findById = async (id: number) => {
     const product = await this.model.findFirst({
       where: {id},
-      include: {seller: {select: {name: true, id: true}}},
+      include: {category: true},
     });
     if (!product) throw new HttpException(404);
     return product;

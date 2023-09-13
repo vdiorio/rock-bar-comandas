@@ -7,9 +7,9 @@ class CommandProductsService {
     this.model = new PrismaClient().commandProducts;
   }
 
-  public getOrdersBySellerId = async (sellerid: number) => {
+  public getOrdersBySellerId = async (categoryId: number) => {
     const orders = await this.model.findMany({
-      where: {product: {sellerid}},
+      where: {product: {categoryId}},
       take: 50,
       include: {product: {select: {name: true}}},
     });
