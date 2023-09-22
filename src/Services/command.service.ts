@@ -25,7 +25,7 @@ class CommandService {
     const command = await this.model.findUnique({
       where: {id},
       include: {
-        productOrders: {include: {products: true}},
+        productOrders: {include: {products: true, seller: true}},
         orders: {
           orderBy: {orderedAt: 'desc'},
           take: 30,
