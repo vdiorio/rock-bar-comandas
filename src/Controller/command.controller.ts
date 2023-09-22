@@ -68,14 +68,14 @@ class CommandController {
   };
 
   public createProductOrder = async (
-    req: Request,
+    req: IcustomRequest,
     res: Response,
     next: NextFunction,
   ) => {
     try {
       const commandId = Number(req.params.id);
       const products = req.body;
-      const sellerId = 1;
+      const sellerId = req.headers.userData.id;
       const updated = await command_ordersService.createProductOrder(
         commandId,
         sellerId,

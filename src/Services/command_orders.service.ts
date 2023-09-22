@@ -29,7 +29,7 @@ class CommandOrders {
         .then((pr) => (value += pr.price * p.quantity)),
     );
     await Promise.all(promises);
-    commandService.updateCommandValue(-value);
+    await commandService.updateCommandValue(commandId, -value);
     const order = await this.model.create({
       data: {
         commandId,

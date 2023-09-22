@@ -17,7 +17,7 @@ router.put(
   '/debit/:id',
   authMiddleware.checkToken,
   authMiddleware.checkSeller,
-  controller.debitProducts,
+  controller.createProductOrder,
 );
 
 router.get('/:id', controller.getCommandById);
