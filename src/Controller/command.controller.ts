@@ -1,7 +1,8 @@
 import {NextFunction, Request, Response} from 'express';
 import commandService from '../Services/command.service';
-import command_productsService from '../Services/command_products.service';
+import command_productsService from '../Services/command_orders.service';
 import IcustomRequest from '../Interfaces/IcustomHeader';
+import command_ordersService from '../Services/command_orders.service';
 
 class CommandController {
   private service;
@@ -66,7 +67,7 @@ class CommandController {
     }
   };
 
-  public debitProducts = async (
+  public createProductOrder = async (
     req: Request,
     res: Response,
     next: NextFunction,
@@ -74,8 +75,12 @@ class CommandController {
     try {
       const commandId = Number(req.params.id);
       const products = req.body;
-      console.log(req.body);
-      const updated = await this.service.debitProduct(commandId, products);
+      const sellerId = 1;
+      const updated = await command_ordersService.createProductOrder(
+        commandId,
+        sellerId,
+        products,
+      );
       return res.status(201).json(updated);
     } catch (err) {
       next(err);
