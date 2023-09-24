@@ -12,7 +12,6 @@ import errorMiddleware from './Middlewares/error.middleware';
 const express = require('express');
 const app = express();
 require('dotenv-safe').config();
-const {PORT} = process.env;
 
 app.use(bodyParser.json());
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -38,7 +37,7 @@ app.use('/categories', categoryRouter);
 
 app.use(errorMiddleware);
 
-app.listen(PORT);
-console.log(`listening on port: ${PORT}`);
+app.listen(3000);
+console.log('listening on port: 3000');
 
 export default app;
