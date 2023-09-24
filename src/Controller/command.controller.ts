@@ -94,7 +94,6 @@ class CommandController {
   ) => {
     try {
       const {id} = req.headers.userData;
-      console.log(req.headers.userData);
       const orders = await command_productsService.getOrdersBySellerId(
         Number(id),
       );
@@ -102,6 +101,20 @@ class CommandController {
     } catch (err) {
       next(err);
     }
+  };
+
+  public cancelProductOrder = async (
+    req: IcustomRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const {id} = req.headers.userData;
+    const orderId = Number(req.params.id);
+    const updated = await command_productsService.cancelProductOrder(
+      orderId,
+      id,
+    );
+    return res.status(201).json(updated);
   };
 }
 

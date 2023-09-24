@@ -1,6 +1,7 @@
 import {PrismaClient} from '@prisma/client';
 import productService from './products.service';
 import commandService from './command.service';
+import HttpException from '../classes/httpException';
 
 class CommandOrders {
   private model;
@@ -29,6 +30,7 @@ class CommandOrders {
         .then((pr) => (value += pr.price * p.quantity)),
     );
     await Promise.all(promises);
+    if (value <= 0) throw new HttpException(403, 'Pedido vazio');
     await commandService.updateCommandValue(commandId, -value);
     const order = await this.model.create({
       data: {
@@ -46,6 +48,24 @@ class CommandOrders {
       },
     });
     return order;
+  };
+
+  public getOrderById = async (id: number) => {
+    const order = await this.model.findUnique({where: {id}});
+    if (!order) throw new HttpException(404, 'Pedido inexistente');
+    return order;
+  };
+
+  public cancelProductOrder = async (orderId: number, sellerId: number) => {
+    const order = await this.getOrderById(orderId);
+    if (sellerId !== order.sellerId) {
+      throw new HttpException(403, 'Não autorizado');
+    }
+    commandService.updateCommandValue(order.commandId, order.value);
+    return await this.model.update({
+      where: {id: orderId},
+      data: {status: 'CANCELLED'},
+    });
   };
 }
 

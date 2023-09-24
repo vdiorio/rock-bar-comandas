@@ -40,7 +40,7 @@ class ProductService {
       where: {id},
       include: {category: true},
     });
-    if (!product) throw new HttpException(404);
+    if (!product) throw new HttpException(404, 'Produto inexistente');
     return product;
   };
 

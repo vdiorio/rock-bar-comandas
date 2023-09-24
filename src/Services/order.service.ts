@@ -1,6 +1,7 @@
 import {PrismaClient} from '@prisma/client';
 import HttpException from '../classes/httpException';
 import CommandService from './command.service';
+import commandService from './command.service';
 
 const {findCommandbyId, updateCommandValue} = CommandService;
 
@@ -25,9 +26,10 @@ class OrderService {
     return newOrder;
   }
 
-  public async cancelOrder(id: number, status: string) {
+  public async cancelOrder(id: number) {
     const order = await this.model.findUnique({where: {id}});
-    if (!order) throw new HttpException(404);
+    if (!order) throw new HttpException(404, 'Pedido inexistente');
+    await commandService.updateCommandValue(order.commandId, -order.value);
     return this.model.update({where: {id}, data: {status: 'CANCELLED'}});
   }
 
@@ -37,7 +39,7 @@ class OrderService {
 
   public async findOrderById(id: number) {
     const order = await this.model.findUnique({where: {id}});
-    if (!order) throw new HttpException(404);
+    if (!order) throw new HttpException(404, 'Pedido inexistente');
     return order;
   }
 

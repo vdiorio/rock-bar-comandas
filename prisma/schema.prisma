@@ -64,6 +64,11 @@ model CommandProducts {
   @@id([orderId, productId])
 }
 
+enum Status {
+  OK
+  CANCELLED
+}
+
 model CommandOrder {
   id        Int               @id @default(autoincrement())
   command   Command           @relation(fields: [commandId], references: [id])
@@ -73,6 +78,7 @@ model CommandOrder {
   orderedAt DateTime          @default(now())
   products  CommandProducts[]
   value     Float
+  status    Status            @default(OK)
 }
 
 enum OrderStatus {

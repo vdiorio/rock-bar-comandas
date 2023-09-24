@@ -33,7 +33,7 @@ class CommandService {
       },
     });
     if (!command) {
-      throw new HttpException(404);
+      throw new HttpException(404, 'Comanda não encontrada');
     }
     return command;
   };
