@@ -106,3 +106,6 @@ ALTER TABLE "CommandOrder" ADD CONSTRAINT "CommandOrder_sellerId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_commandId_fkey" FOREIGN KEY ("commandId") REFERENCES "Command"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+INSERT INTO "User" ("username", "password", "role", "email", "name", "cpf")
+VALUES ('admin', '$2a$11$tPDoHqSSp3oQAu3s0naWY.5BuAmFJtUwl0lTavMjEIiOZyFtXGOnW', 'ADMIN', 'admin@admin.com', 'Admin Name', '1234567890');
