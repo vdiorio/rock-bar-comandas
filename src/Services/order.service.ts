@@ -3,7 +3,7 @@ import HttpException from '../classes/httpException';
 import CommandService from './command.service';
 import commandService from './command.service';
 
-const {findCommandbyId, updateCommandValue} = CommandService;
+const {findOrCreate, updateCommandValue} = CommandService;
 
 class OrderService {
   private model;
@@ -13,7 +13,7 @@ class OrderService {
   }
 
   public async createOrder(value: number, commandId: number) {
-    const command = await findCommandbyId(commandId);
+    const command = await findOrCreate(commandId);
     updateCommandValue(command.id, value);
     const newOrder = await this.model.create({
       data: {

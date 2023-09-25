@@ -38,6 +38,15 @@ class CommandService {
     return command;
   };
 
+  public findOrCreate = async (id: number) => {
+    const upsert = await this.model.upsert({
+      where: {id},
+      update: {},
+      create: {id},
+    });
+    return upsert;
+  };
+
   public updateCommandValue = async (id: number, addValue: number) => {
     const {value} = await this.findCommandbyId(id);
     const newValue = value + addValue;
