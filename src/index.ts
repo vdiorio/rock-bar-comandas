@@ -37,7 +37,9 @@ app.use('/categories', categoryRouter);
 
 app.use(errorMiddleware);
 
-app.listen(8080);
-console.log('listening on port: 8080');
+const {PORT} = process.env;
+
+app.listen(PORT);
+console.log(`listening on port: ${PORT}`);
 
 export default app;
