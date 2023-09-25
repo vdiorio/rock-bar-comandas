@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc && node .",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts' --exit",
-    "dev": "npx nodemon ./src/index.ts"
+    "dev": "npx nodemon ./src/index.ts",
+    "migrate": "npx prisma migrate dev --name init"
   },
   "author": "Vitor Martins Diorio",
   "license": "ISC",
