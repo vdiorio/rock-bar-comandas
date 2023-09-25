@@ -26,7 +26,7 @@ router.put(
   '/:id',
   authMiddleware.checkToken,
   authMiddleware.checkSeller,
-  controller.updateCommandValue,
+  controller.updateCommand,
 );
 
 export default router;

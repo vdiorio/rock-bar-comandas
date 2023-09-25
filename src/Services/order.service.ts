@@ -3,7 +3,7 @@ import HttpException from '../classes/httpException';
 import CommandService from './command.service';
 import commandService from './command.service';
 
-const {findOrCreate, updateCommandValue} = CommandService;
+const {findOrCreate, updateCommand} = CommandService;
 
 class OrderService {
   private model;
@@ -12,9 +12,13 @@ class OrderService {
     this.model = new PrismaClient().order;
   }
 
-  public async createOrder(value: number, commandId: number) {
+  public async createOrder(
+    value: number,
+    commandId: number,
+    name: string | null = null,
+  ) {
     const command = await findOrCreate(commandId);
-    updateCommandValue(command.id, value);
+    await updateCommand(command.id, value, name);
     const newOrder = await this.model.create({
       data: {
         commandId,
@@ -29,7 +33,7 @@ class OrderService {
   public async cancelOrder(id: number) {
     const order = await this.model.findUnique({where: {id}});
     if (!order) throw new HttpException(404, 'Pedido inexistente');
-    await commandService.updateCommandValue(order.commandId, -order.value);
+    await commandService.updateCommand(order.commandId, -order.value);
     return this.model.update({where: {id}, data: {status: 'CANCELLED'}});
   }
 

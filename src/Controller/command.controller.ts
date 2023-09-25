@@ -38,7 +38,7 @@ class CommandController {
     }
   };
 
-  public updateCommandValue = async (
+  public updateCommand = async (
     req: Request,
     res: Response,
     next: NextFunction,
@@ -46,8 +46,8 @@ class CommandController {
     try {
       const id = Number(req.params.id);
       const value = Number(req.query.value);
-      console.log(req.query);
-      const command = await this.service.updateCommandValue(id, value);
+      const name = req.query.name as string;
+      const command = await this.service.updateCommand(id, value, name);
       return res.status(200).json(command);
     } catch (err) {
       next(err);

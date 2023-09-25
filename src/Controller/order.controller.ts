@@ -51,10 +51,11 @@ class OrderController {
     next: NextFunction,
   ) => {
     try {
-      const {value, commandId} = req.body;
+      const {value, commandId, name = null} = req.body;
       const order = await this.service.createOrder(
         Number(value),
         Number(commandId),
+        name,
       );
       return res.status(200).json(order);
     } catch (err) {

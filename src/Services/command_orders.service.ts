@@ -31,7 +31,7 @@ class CommandOrders {
     );
     await Promise.all(promises);
     if (value <= 0) throw new HttpException(403, 'Pedido vazio');
-    await commandService.updateCommandValue(commandId, -value);
+    await commandService.updateCommand(commandId, -value);
     const order = await this.model.create({
       data: {
         commandId,
@@ -61,7 +61,7 @@ class CommandOrders {
     if (sellerId !== order.sellerId) {
       throw new HttpException(403, 'Não autorizado');
     }
-    commandService.updateCommandValue(order.commandId, order.value);
+    commandService.updateCommand(order.commandId, order.value);
     return await this.model.update({
       where: {id: orderId},
       data: {status: 'CANCELLED'},

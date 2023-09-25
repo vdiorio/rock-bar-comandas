@@ -43,20 +43,33 @@ class CommandService {
     return upsert;
   };
 
-  public updateCommandValue = async (id: number, addValue: number) => {
-    const {value} = await this.findCommandbyId(id);
-    const newValue = value + addValue;
-    if (newValue < 0) {
-      throw new HttpException(
-        400,
-        `Não foi possível debitar R$${Math.abs(addValue).toFixed(
-          2,
-        )} da comanda ${id}. O valor atual da comanda é R$${value.toFixed(2)}`,
-      );
+  public updateCommand = async (
+    id: number,
+    addValue: number | null = null,
+    name: string | null = null,
+  ) => {
+    let data = {};
+    if (addValue) {
+      const {value} = await this.findCommandbyId(id);
+      const newValue = value + addValue;
+      if (newValue < 0) {
+        throw new HttpException(
+          400,
+          `Não foi possível debitar R$${Math.abs(addValue).toFixed(
+            2,
+          )} da comanda ${id}. O valor atual da comanda é R$${value.toFixed(
+            2,
+          )}`,
+        );
+      }
+      data = {value: newValue};
+    }
+    if (name) {
+      data = {...data, name};
     }
     return this.model.update({
       where: {id},
-      data: {value: newValue},
+      data,
     });
   };
 }
