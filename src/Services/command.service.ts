@@ -13,10 +13,6 @@ class CommandService {
     this.modelCommandProducts = prisma.commandProducts;
   }
 
-  public async createCommand() {
-    return this.model.create({});
-  }
-
   public async findCommands() {
     return this.model.findMany({orderBy: {value: 'desc'}});
   }

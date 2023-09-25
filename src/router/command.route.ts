@@ -29,11 +29,4 @@ router.put(
   controller.updateCommandValue,
 );
 
-router.post(
-  '/',
-  authMiddleware.checkToken,
-  authMiddleware.checkAdmin,
-  controller.createCommand,
-);
-
 export default router;

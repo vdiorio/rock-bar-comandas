@@ -11,19 +11,6 @@ class CommandController {
     this.service = commandService;
   }
 
-  public createCommand = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    try {
-      const command = await this.service.createCommand();
-      return res.status(200).json(command);
-    } catch (err) {
-      next(err);
-    }
-  };
-
   public getAllCommands = async (
     req: Request,
     res: Response,
