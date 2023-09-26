@@ -111,6 +111,7 @@ class CommandController {
   ) => {
     const {id} = req.headers.userData;
     const products = await command_productsService.getTotalSells(id);
+    console.log(products);
     return res.status(201).json(products);
   };
 }
