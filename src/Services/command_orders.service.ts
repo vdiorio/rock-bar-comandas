@@ -15,7 +15,10 @@ class CommandOrders {
   };
 
   public getOrdersBySellerId = async (sellerId: number) => {
-    return this.model.findMany({where: {sellerId}, include: {products: true}});
+    return this.model.findMany({
+      where: {sellerId},
+      include: {products: {include: {product: true}}},
+    });
   };
 
   public createProductOrder = async (
