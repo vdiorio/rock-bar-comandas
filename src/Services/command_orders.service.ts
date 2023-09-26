@@ -34,7 +34,7 @@ class CommandOrders {
     JOIN
       "Product" p ON cp."productId" = p.id
     WHERE
-      co."sellerId" = ${sellerId}
+      co."sellerId" = ${sellerId} AND co.status = 'OK'
     GROUP BY
       p.name`;
     return products.map((product: any) => ({
