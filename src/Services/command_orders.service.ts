@@ -15,7 +15,7 @@ class CommandOrders {
   };
 
   public getOrdersBySellerId = async (sellerId: number) => {
-    return this.model.findMany({where: {sellerId}});
+    return this.model.findMany({where: {sellerId}, include: {products: true}});
   };
 
   public createProductOrder = async (
@@ -56,6 +56,7 @@ class CommandOrders {
       include: {products: true},
     });
     if (!order) throw new HttpException(404, 'Pedido inexistente');
+    console.log(order);
     return order;
   };
 
