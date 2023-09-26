@@ -24,7 +24,7 @@ class CommandOrders {
   };
 
   public getTotalSells = async (sellerId: number) => {
-    return this.prisma.$queryRaw` SELECT
+    const products: any[] = await this.prisma.$queryRaw` SELECT
       p.name AS productName,
       SUM(cp.quantity) AS quantitySold
     FROM
@@ -37,6 +37,10 @@ class CommandOrders {
       co."sellerId" = ${sellerId}
     GROUP BY
       p.name`;
+    return products.map((product: any) => ({
+      product: product.productname,
+      sold: Number(product.quantitysold),
+    }));
   };
 
   public createProductOrder = async (
