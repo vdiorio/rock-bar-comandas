@@ -60,6 +60,8 @@ class CommandOrders {
     const order = await this.getOrderById(orderId);
     if (sellerId !== order.sellerId) {
       throw new HttpException(403, 'Não autorizado');
+    } else if (order.status !== 'OK') {
+      throw new HttpException(403, 'Pedido já cancelado');
     }
     commandService.updateCommand(order.commandId, order.value);
     return await this.model.update({
