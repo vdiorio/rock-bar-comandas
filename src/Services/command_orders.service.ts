@@ -51,7 +51,10 @@ class CommandOrders {
   };
 
   public getOrderById = async (id: number) => {
-    const order = await this.model.findUnique({where: {id}});
+    const order = await this.model.findUnique({
+      where: {id},
+      include: {products: true},
+    });
     if (!order) throw new HttpException(404, 'Pedido inexistente');
     return order;
   };
