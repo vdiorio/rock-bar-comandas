@@ -6,8 +6,10 @@ import HttpException from '../classes/httpException';
 class CommandOrders {
   private model;
 
+  private prisma = new PrismaClient();
+
   constructor() {
-    this.model = new PrismaClient().commandOrder;
+    this.model = this.prisma.commandOrder;
   }
 
   public getOrdersByCommandId = async (commandId: number) => {
@@ -19,6 +21,22 @@ class CommandOrders {
       where: {sellerId},
       include: {products: {include: {product: true}}},
     });
+  };
+
+  public getTotalSells = async (sellerId: number) => {
+    return this.prisma.$queryRaw` SELECT
+      p.name AS productName,
+      SUM(cp.quantity) AS quantitySold
+    FROM
+      "CommandOrder" co
+    JOIN
+      "CommandProducts" cp ON co.id = cp."orderId"
+    JOIN
+      "Product" p ON cp."productId" = p.id
+    WHERE
+      co."sellerId" = ${sellerId}
+    GROUP BY
+      p.name`;
   };
 
   public createProductOrder = async (

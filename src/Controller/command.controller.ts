@@ -103,6 +103,16 @@ class CommandController {
     );
     return res.status(201).json(updated);
   };
+
+  public getTotalItemsSold = async (
+    req: IcustomRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const {id} = req.headers.userData;
+    const products = await command_productsService.getTotalSells(id);
+    return res.status(201).json(products);
+  };
 }
 
 export default new CommandController();

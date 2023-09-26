@@ -10,5 +10,6 @@ const {checkSeller, checkToken} = authMiddleware;
 
 router.get('/', checkToken, checkSeller, controller.getOrdersBySellerId);
 router.put('/:id', checkToken, checkSeller, controller.cancelProductOrder);
+router.get('/total', checkToken, checkSeller, controller.getTotalItemsSold);
 
 export default router;
