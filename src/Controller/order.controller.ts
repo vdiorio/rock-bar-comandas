@@ -121,6 +121,20 @@ class OrderController {
       next(e);
     }
   };
+
+  public deletePendingOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const {id} = req.params;
+      await this.service.deletePendingOrder(Number(id));
+      return res.status(201).json('No content');
+    } catch (e) {
+      next(e);
+    }
+  };
 }
 
 export default new OrderController();

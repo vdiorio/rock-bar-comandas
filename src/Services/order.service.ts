@@ -83,6 +83,12 @@ class OrderService {
       },
     });
   }
+
+  public async deletePendingOrder(id: number) {
+    const order = this.model.delete({where: {id, status: 'PENDING'}});
+    if (!order) throw new HttpException(404);
+    return order;
+  }
 }
 
 export default new OrderService();
