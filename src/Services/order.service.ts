@@ -37,6 +37,32 @@ class OrderService {
     return this.model.update({where: {id}, data: {status: 'CANCELLED'}});
   }
 
+  public async getPendingOrderById(id: number) {
+    const order = await this.model.findFirst({where: {id, status: 'PENDING'}});
+    if (!order) throw new HttpException(404, 'Pedido não encontrado');
+    return order;
+  }
+
+  public async createPendingOrder(commandId: number, value: number) {
+    return this.model.create({
+      data: {
+        commandId,
+        value,
+        status: 'PENDING',
+      },
+    });
+  }
+
+  public async confirmOrder(id: number) {
+    await this.getPendingOrderById(id);
+    return this.model.update({
+      where: {id, status: 'PENDING'},
+      data: {
+        status: 'PAID',
+      },
+    });
+  }
+
   public async findOrders() {
     return this.model.findMany();
   }

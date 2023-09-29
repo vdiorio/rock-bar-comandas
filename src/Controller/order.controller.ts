@@ -76,6 +76,51 @@ class OrderController {
       next(err);
     }
   };
+
+  public getPendingOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const {id} = req.params;
+      const order = await this.service.getPendingOrderById(Number(id));
+      return res.status(200).json(order);
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public confirmPendingOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const {id} = req.params;
+      const order = await this.service.confirmOrder(Number(id));
+      return res.status(200).json(order);
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public createPendingOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const {commandId, value} = req.body;
+      const order = await this.service.createPendingOrder(
+        Number(commandId),
+        Number(value),
+      );
+      return res.status(200).json(order);
+    } catch (e) {
+      next(e);
+    }
+  };
 }
 
 export default new OrderController();
