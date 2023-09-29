@@ -33,8 +33,12 @@ class OrderService {
   public async cancelOrder(id: number) {
     const order = await this.model.findUnique({where: {id}});
     if (!order) throw new HttpException(404, 'Pedido inexistente');
-    await commandService.updateCommand(order.commandId, -order.value);
-    return this.model.update({where: {id}, data: {status: 'CANCELLED'}});
+    if (order.status === 'PAID') {
+      await commandService.updateCommand(order.commandId, -order.value);
+      return this.model.update({where: {id}, data: {status: 'CANCELLED'}});
+    } else if (order.status === 'PENDING') {
+      return this.model.delete({where: {id}});
+    }
   }
 
   public async getPendingOrderById(id: number) {
@@ -82,12 +86,6 @@ class OrderService {
         },
       },
     });
-  }
-
-  public async deletePendingOrder(id: number) {
-    const order = this.model.delete({where: {id, status: 'PENDING'}});
-    if (!order) throw new HttpException(404);
-    return order;
   }
 }
 
