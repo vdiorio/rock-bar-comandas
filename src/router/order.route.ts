@@ -13,5 +13,12 @@ router.post('/', checkToken, checkAdmin, controller.createOrder);
 router.get('/:id', checkToken, checkSeller, controller.getOrderById);
 router.put('/:id', checkToken, checkSeller, controller.cancelOrder);
 router.get('/pending/:id', controller.getPendingOrder);
+router.post('/pending/', controller.createPendingOrder);
+router.put(
+  '/pending/:id',
+  checkToken,
+  checkAdmin,
+  controller.confirmPendingOrder,
+);
 
 export default router;
