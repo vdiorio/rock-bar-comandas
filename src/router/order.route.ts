@@ -20,5 +20,11 @@ router.put(
   checkAdmin,
   controller.confirmPendingOrder,
 );
+router.delete(
+  '/pending/:id',
+  checkToken,
+  checkAdmin,
+  controller.deletePendingOrder,
+);
 
 export default router;
