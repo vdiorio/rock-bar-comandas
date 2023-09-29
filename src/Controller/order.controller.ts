@@ -70,7 +70,7 @@ class OrderController {
   ) => {
     try {
       const {id} = req.body;
-      const order = this.service.cancelOrder(id);
+      const order = await this.service.cancelOrder(id);
       return res.status(200).json(order);
     } catch (err) {
       next(err);
