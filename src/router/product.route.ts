@@ -6,9 +6,9 @@ const router = Router();
 
 const controller = productController;
 
-const {checkToken, checkAdmin} = authMiddleware;
+const {checkToken, checkAdmin, checkSeller} = authMiddleware;
 
-router.get('/', controller.getProducts);
+router.get('/', checkToken, checkSeller, controller.getProducts);
 router.get('/:id', controller.findById);
 router.put('/:id', checkToken, checkAdmin, controller.updateProduct);
 router.post('/', checkToken, checkAdmin, controller.createProduct);

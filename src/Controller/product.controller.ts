@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import productsService from '../Services/products.service';
 import Iproduct from '../Interfaces/Iproduct';
 import userService from '../Services/user.service';
+import IcustomRequest from 'src/Interfaces/IcustomHeader';
 
 class ProductController {
   private service;
@@ -29,12 +30,12 @@ class ProductController {
   };
 
   public getProducts = async (
-    req: Request,
+    req: IcustomRequest,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const {sellerId} = req.query;
+      const sellerId = req.headers.userData.id;
       let categoryId;
       if (sellerId) {
         categoryId = await userService.findSellerCategory(Number(sellerId));
