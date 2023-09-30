@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import productsService from '../Services/products.service';
 import Iproduct from '../Interfaces/Iproduct';
 import userService from '../Services/user.service';
-import IcustomRequest from 'src/Interfaces/IcustomHeader';
+import IcustomRequest from '../Interfaces/IcustomHeader';
 
 class ProductController {
   private service;
