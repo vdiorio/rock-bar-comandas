@@ -58,7 +58,8 @@ class OrderService {
   }
 
   public async confirmOrder(id: number) {
-    await this.getPendingOrderById(id);
+    const {value, commandId} = await this.getPendingOrderById(id);
+    await commandService.updateCommand(commandId, value);
     return this.model.update({
       where: {id, status: 'PENDING'},
       data: {
