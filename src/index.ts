@@ -21,8 +21,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     'GET, POST, OPTIONS, PUT, PATCH, DELETE',
   );
   res.setHeader(
-    'Access-Control-Allow-Origin',
-    'https://eskinarockbar.vercel.app',
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type,authorization',
   );
   next();
 });
